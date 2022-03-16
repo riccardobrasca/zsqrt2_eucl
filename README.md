@@ -1,2 +1,2 @@
-# zsqrt -2 eucl
-Proof in Lean that zsqrt 2 is euclidean
+# ℤ√(-2) is euclidean
+Proof in Lean that ℤ√(-2) is euclidean
