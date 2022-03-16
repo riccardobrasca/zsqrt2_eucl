@@ -82,9 +82,6 @@ jobs:
         with:
           name: ${{ needs.build.outputs.artifact_name }}
 
-      - name: untar build
-        run: tar -xf workspace.tar
-
       - name: install elan
         run: |
           set -o pipefail
