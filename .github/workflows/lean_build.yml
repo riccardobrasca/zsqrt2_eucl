@@ -32,7 +32,7 @@ jobs:
           access_token: ${{ github.token }}
 
   build:
-    name: Build flt-regular
+    name: Build zsqrt2_eucl
     runs-on: ubuntu-latest
     env:
       # number of commits to check for olean cache
@@ -77,30 +77,6 @@ jobs:
           echo "::set-output name=started::true"
           lean --json --make src | python scripts/detect_errors.py
           lean --json --make src | python scripts/detect_errors.py
-
-      - name: push release to azure
-        if: always() && (github.repository == 'leanprover-community/flt-regular') && steps.build.outputs.started == 'true' && github.ref == 'refs/heads/master'
-        continue-on-error: true
-        run: |
-          archive_name="$(git rev-parse HEAD).tar.xz"
-          find src/ -name "*.olean" -o -name ".noisy_files" | tar cJf "$archive_name" -T -
-          azcopy copy "$archive_name" "https://oleanstorage.blob.core.windows.net/mathlib/flt-regular/$archive_name${{ secrets.AZURE_SAS_TOKEN }}" --block-size-mb 99 --overwrite false
-
-      - name: setup precompiled zip file
-        if: always() && steps.build.outputs.started == 'true'
-        id: setup_precompiled
-        run: |
-          touch workspace.tar
-          tar -cf workspace.tar --exclude=*.tar* .
-          git_hash="$(git log -1 --pretty=format:%h)"
-          echo "::set-output name=artifact_name::precompiled-flt-regular-$short_lean_version-$git_hash"
-
-      - name: upload precompiled flt-regular zip file
-        if: always() && steps.build.outputs.started == 'true'
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ steps.setup_precompiled.outputs.artifact_name }}
-          path: workspace.tar
 
   lint:
     name: Lint zsqrt2_eucl
