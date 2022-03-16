@@ -15,7 +15,7 @@ jobs:
           all_but_latest: true
           access_token: ${{ github.token }}
 
-  update_lean_xyz_branch_and_build:
+  build:
     runs-on: ubuntu-latest
     name: Update lean-x.y.z branch and build project
     steps:
