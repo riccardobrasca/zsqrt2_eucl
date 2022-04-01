@@ -5,7 +5,9 @@ import algebra.order.archimedean
 
 lemma debut (x : ℚ) : ∃ (y : ℤ), |x - y| ≤ 1/2 :=
 begin
-  sorry,/- 
+  use round x,
+  exact abs_sub_round x
+  /- 
   use round x,
   rw round,
   rw abs_sub_le_iff,
