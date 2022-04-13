@@ -29,9 +29,9 @@ begin
   rw I_mul_I,
   simp,
   rw <- sq,
-  -- rw sq_sqrt,
-
-  sorry
+  norm_cast,
+  rw sq_sqrt,
+  norm_num,
 end
 
 end
