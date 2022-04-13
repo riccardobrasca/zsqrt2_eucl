@@ -23,12 +23,9 @@ section
 def to_complex : ℤ[i] →+* ℂ :=
 begin
   refine zsqrtd.lift ⟨I*sqrt(2), _⟩,
-  rw <- mul_assoc,
-  rw <- mul_comm I (I * ↑(sqrt 2)),
-  rw <- mul_assoc,
-  rw I_mul_I,
+  rw [← mul_assoc, ← mul_comm I (I * ↑(sqrt 2)), ← mul_assoc, I_mul_I],
   simp,
-  rw <- sq,
+  rw ← sq,
   norm_cast,
   rw sq_sqrt,
   norm_num,
