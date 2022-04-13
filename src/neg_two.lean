@@ -33,11 +33,16 @@ end
 
 end
 
--- instance : has_coe (ℤ[i]) ℂ := ⟨to_complex⟩
+instance : has_coe (ℤ[i]) ℂ := ⟨to_complex⟩
 
--- lemma to_complex_def (x : ℤ[i]) : (x : ℂ) = x.re + x.im * I := rfl
+lemma to_complex_def (x : ℤ[i]) : (x : ℂ) = x.re + x.im * I * sqrt(2) :=
+begin
+  rw [mul_assoc],
+  refl,
+end
 
--- lemma to_complex_def' (x y : ℤ) : ((⟨x, y⟩ : ℤ[i]) : ℂ) = x + y * I := by simp [to_complex_def]
+
+lemma to_complex_def' (x y : ℤ) : ((⟨x, y⟩ : ℤ[i]) : ℂ) = x + y * I * sqrt(2) := by simp [to_complex_def]
 
 -- lemma to_complex_def₂ (x : ℤ[i]) : (x : ℂ) = ⟨x.re, x.im⟩ :=
 -- by apply complex.ext; simp [to_complex_def]
