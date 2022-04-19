@@ -9,18 +9,18 @@ noncomputable theory
 
 @[reducible] def gaussian_int : Type := zsqrtd (-2)
 
-local notation `ℤ[i]` := gaussian_int
+local notation `ℤ[√-2]` := gaussian_int
 
 namespace gaussian_int
 
-instance : has_repr ℤ[i] := ⟨λ x, "⟨" ++ repr x.re ++ ", " ++ repr x.im ++ "⟩"⟩
+instance : has_repr ℤ[√-2] := ⟨λ x, "⟨" ++ repr x.re ++ ", " ++ repr x.im ++ "⟩"⟩
 
-instance : comm_ring ℤ[i] := zsqrtd.comm_ring
+instance : comm_ring ℤ[√-2] := zsqrtd.comm_ring
 
 section
 
 /-- The embedding of the Gaussian integers into the complex numbers, as a ring homomorphism. -/
-def to_complex : ℤ[i] →+* ℂ :=
+def to_complex : ℤ[√-2] →+* ℂ :=
 begin
   refine zsqrtd.lift ⟨I*sqrt(2), _⟩,
   rw [← mul_assoc, ← mul_comm I (I * ↑(sqrt 2)), ← mul_assoc, I_mul_I],
@@ -33,66 +33,90 @@ end
 
 end
 
-instance : has_coe (ℤ[i]) ℂ := ⟨to_complex⟩
+instance : has_coe (ℤ[√-2]) ℂ := ⟨to_complex⟩
 
-lemma to_complex_def (x : ℤ[i]) : (x : ℂ) = x.re + x.im * I * sqrt(2) :=
+lemma to_complex_def (x : ℤ[√-2]) : (x : ℂ) = x.re + x.im * I * sqrt(2) :=
 begin
   rw [mul_assoc],
   refl,
 end
 
 
-lemma to_complex_def' (x y : ℤ) : ((⟨x, y⟩ : ℤ[i]) : ℂ) = x + y * I * sqrt(2) := by simp [to_complex_def]
+lemma to_complex_def' (x y : ℤ) : ((⟨x, y⟩ : ℤ[√-2]) : ℂ) = x + y * I * sqrt(2) :=by simp [to_complex_def]
 
--- lemma to_complex_def₂ (x : ℤ[i]) : (x : ℂ) = ⟨x.re, x.im⟩ :=
--- by apply complex.ext; simp [to_complex_def]
+lemma to_complex_def₂ (x : ℤ[√-2]) : (x : ℂ) = ⟨x.re, x.im * sqrt 2⟩ :=by apply complex.ext; simp [to_complex_def]
 
--- @[simp] lemma to_real_re (x : ℤ[i]) : ((x.re : ℤ) : ℝ) = (x : ℂ).re :=
--- begin
---   simp [to_complex_def],
--- end
--- @[simp] lemma to_real_im (x : ℤ[i]) : ((x.im : ℤ) : ℝ) = (x : ℂ).im := by simp [to_complex_def]
--- @[simp] lemma to_complex_re (x y : ℤ) : ((⟨x, y⟩ : ℤ[i]) : ℂ).re = x := by simp [to_complex_def]
--- @[simp] lemma to_complex_im (x y : ℤ) : ((⟨x, y⟩ : ℤ[i]) : ℂ).im = y := by simp [to_complex_def]
--- @[simp] lemma to_complex_add (x y : ℤ[i]) : ((x + y : ℤ[i]) : ℂ) = x + y := to_complex.map_add _ _
--- @[simp] lemma to_complex_mul (x y : ℤ[i]) : ((x * y : ℤ[i]) : ℂ) = x * y := to_complex.map_mul _ _
--- @[simp] lemma to_complex_one : ((1 : ℤ[i]) : ℂ) = 1 := to_complex.map_one
--- @[simp] lemma to_complex_zero : ((0 : ℤ[i]) : ℂ) = 0 := to_complex.map_zero
--- @[simp] lemma to_complex_neg (x : ℤ[i]) : ((-x : ℤ[i]) : ℂ) = -x := to_complex.map_neg _
--- @[simp] lemma to_complex_sub (x y : ℤ[i]) : ((x - y : ℤ[i]) : ℂ) = x - y := to_complex.map_sub _ _
+@[simp] lemma to_real_re (x : ℤ[√-2]) : ((x.re : ℤ) : ℝ) = (x : ℂ).re :=by simp [to_complex_def]
 
--- @[simp] lemma to_complex_inj {x y : ℤ[i]} : (x : ℂ) = y ↔ x = y :=
--- by cases x; cases y; simp [to_complex_def₂]
+@[simp] lemma to_real_im (x : ℤ[√-2]) : ((x.im : ℤ) * sqrt 2 : ℝ) = (x : ℂ).im *sqrt 2 :=
+begin
+  norm_num,
+  --norm_cast,
+  sorry
+end
 
--- @[simp] lemma to_complex_eq_zero {x : ℤ[i]} : (x : ℂ) = 0 ↔ x = 0 :=
--- by rw [← to_complex_zero, to_complex_inj]
+@[simp] lemma to_complex_re (x y : ℤ) : ((⟨x, y⟩ : ℤ[√-2]) : ℂ).re = x :=by simp [to_complex_def]
 
--- @[simp] lemma nat_cast_real_norm (x : ℤ[i]) : (x.norm : ℝ) = (x : ℂ).norm_sq :=
--- by rw [norm, norm_sq]; simp
+@[simp] lemma to_complex_im (x y : ℤ) : ((⟨x, y⟩ : ℤ[√-2]) : ℂ).im = y * sqrt 2 :=by simp [to_complex_def]
 
--- @[simp] lemma nat_cast_complex_norm (x : ℤ[i]) : (x.norm : ℂ) = (x : ℂ).norm_sq :=
--- by cases x; rw [norm, norm_sq]; simp
+@[simp] lemma to_complex_add (x y : ℤ[√-2]) : ((x + y : ℤ[√-2]) : ℂ) = x + y := by refine to_complex.map_add _ _
+@[simp] lemma to_complex_mul (x y : ℤ[√-2]) : ((x * y : ℤ[√-2]) : ℂ) = x * y :=by refine to_complex.map_mul _ _
+@[simp] lemma to_complex_one : ((1 : ℤ[√-2]) : ℂ) = 1 :=by refine to_complex.map_one
+@[simp] lemma to_complex_zero : ((0 : ℤ[√-2]) : ℂ) = 0 :=by refine to_complex.map_zero
+@[simp] lemma to_complex_neg (x : ℤ[√-2]) : ((-x : ℤ[√-2]) : ℂ) = -x :=by refine to_complex.map_neg _
+ @[simp] lemma to_complex_sub (x y : ℤ[√-2]) : ((x - y : ℤ[√-2]) : ℂ) = x - y := by refine to_complex.map_sub _ _
 
--- lemma norm_nonneg (x : ℤ[i]) : 0 ≤ norm x := norm_nonneg (by norm_num) _
+@[simp] lemma to_complex_inj {x y : ℤ[√-2]} : (x : ℂ) = y ↔ x = y :=
+ by cases x; cases y; simp [to_complex_def₂]
 
--- @[simp] lemma norm_eq_zero {x : ℤ[i]} : norm x = 0 ↔ x = 0 :=
--- by rw [← @int.cast_inj ℝ _ _ _]; simp
+@[simp] lemma to_complex_eq_zero {x : ℤ[√-2]} : (x : ℂ) = 0 ↔ x = 0 :=
+ by rw [← to_complex_zero, to_complex_inj]
 
--- lemma norm_pos {x : ℤ[i]} : 0 < norm x ↔ x ≠ 0 :=
--- by rw [lt_iff_le_and_ne, ne.def, eq_comm, norm_eq_zero]; simp [norm_nonneg]
+@[simp] lemma nat_cast_real_norm (x : ℤ[√-2]) : (x.norm : ℝ)= (x : ℂ).norm_sq :=
+begin
+  rw [norm, norm_sq];
+  simp,
+  sorry
+end
 
--- @[simp] lemma coe_nat_abs_norm (x : ℤ[i]) : (x.norm.nat_abs : ℤ) = x.norm :=
--- int.nat_abs_of_nonneg (norm_nonneg _)
 
--- @[simp] lemma nat_cast_nat_abs_norm {α : Type*} [ring α]
---   (x : ℤ[i]) : (x.norm.nat_abs : α) = x.norm :=
--- by rw [← int.cast_coe_nat, coe_nat_abs_norm]
+@[simp] lemma nat_cast_complex_norm (x : ℤ[√-2]) : (x.norm : ℂ) = (x : ℂ).norm_sq := 
+begin
+  cases x; rw [norm, norm_sq];
+  norm_cast,
+  simp,
+  rw ← mul_comm (sqrt 2) ↑x_im,
+  rw ← mul_assoc,
+  rw ← mul_comm ↑x_im (sqrt 2),
+  rw mul_assoc ↑x_im (sqrt 2) (sqrt 2),
+  norm_num,
+  ring_nf,
+  finish,
+end
 
--- lemma nat_abs_norm_eq (x : ℤ[i]) : x.norm.nat_abs =
---   x.re.nat_abs * x.re.nat_abs + x.im.nat_abs * x.im.nat_abs :=
--- int.coe_nat_inj $ begin simp, simp [norm] end
+lemma norm_nonneg (x : ℤ[√-2]) : 0 ≤ norm x := by refine norm_nonneg (by norm_num) _
 
--- protected def div (x y : ℤ[i]) : ℤ[i] :=
+@[simp] lemma norm_eq_zero {x : ℤ[√-2]} : norm x = 0 ↔ x = 0 := by rw [← @int.cast_inj ℝ _ _ _]; simp
+
+lemma norm_pos {x : ℤ[√-2]} : 0 < norm x ↔ x ≠ 0 := by rw [lt_iff_le_and_ne, ne.def, eq_comm, norm_eq_zero]; simp [norm_nonneg]
+
+@[simp] lemma coe_nat_abs_norm (x : ℤ[√-2]) : (x.norm.nat_abs : ℤ) =x.norm := by refine int.nat_abs_of_nonneg (norm_nonneg _)
+
+@[simp] lemma nat_cast_nat_abs_norm {α : Type*} [ring α]
+   (x : ℤ[√-2]) : (x.norm.nat_abs : α) = x.norm :=
+ by rw [← int.cast_coe_nat, coe_nat_abs_norm]
+
+ lemma nat_abs_norm_eq (x : ℤ[√-2]) : x.norm.nat_abs =
+   x.re.nat_abs * x.re.nat_abs + x.im.nat_abs * x.im.nat_abs :=
+  int.coe_nat_inj $ 
+  begin
+    simp,
+    simp [norm],
+    sorry
+  end
+
+
+-- protected def div (x y : ℤ[√-2]) : ℤ[√-2] :=
 -- let n := (rat.of_int (norm y))⁻¹ in let c := y.conj in
 -- ⟨round (rat.of_int (x * c).re * n : ℚ),
 --  round (rat.of_int (x * c).im * n : ℚ)⟩
