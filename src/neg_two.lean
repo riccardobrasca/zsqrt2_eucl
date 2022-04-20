@@ -106,13 +106,6 @@ lemma norm_pos {x : ℤ[√-2]} : 0 < norm x ↔ x ≠ 0 := by rw [lt_iff_le_and
    (x : ℤ[√-2]) : (x.norm.nat_abs : α) = x.norm :=
  by rw [← int.cast_coe_nat, coe_nat_abs_norm]
 
-lemma _root_.nat_abs_cast_of_zero_le {a : ℤ} (h : 0 ≤ a) : ↑a.nat_abs = a :=
-begin
-  obtain ⟨b, hb⟩ := int.eq_coe_of_zero_le h,
-  rw [hb],
-  simp
-end
-
  lemma nat_abs_norm_eq (x : ℤ[√-2]) : x.norm.nat_abs =
    x.re.nat_abs * x.re.nat_abs + 2 * x.im.nat_abs * x.im.nat_abs :=
   begin
@@ -121,7 +114,7 @@ end
     nth_rewrite 1 [mul_assoc],
     nth_rewrite 0 [mul_assoc],
     simp,
-    refine nat_abs_cast_of_zero_le _,
+    refine int.nat_abs_of_nonneg _,
     refine add_nonneg _ _,
     { exact mul_self_nonneg _ },
     { refine mul_nonneg _ _,
