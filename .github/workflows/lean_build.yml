@@ -20,9 +20,12 @@ jobs:
     name: Update lean-x.y.z branch and build project
     steps:
 
-    - name: checkout project
+    - name: Fix issue with repository ownership
       run: git config --global --add safe.directory /github/workspace
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
+
+    - name: checkout project
+      uses: actions/checkout@v2
       with:
         fetch-depth: 0
 
