@@ -21,7 +21,7 @@ jobs:
     steps:
 
     - name: Fix issue with repository ownership
-      run: 
+      run: |
       git config --global --add safe.directory /github/workspace
       git config --global --add safe.directory $GITHUB_WORKSPACE
       git config --global --add safe.directory `pwd`
