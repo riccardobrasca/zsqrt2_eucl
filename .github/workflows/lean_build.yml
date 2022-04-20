@@ -21,13 +21,9 @@ jobs:
     steps:
 
     - name: checkout project
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
-
-    - name: Fix issue with repository ownership
-      run: |
-        git config --global --add safe.directory /github/workspace
 
     - name: update branch
       if: github.ref == 'refs/heads/master'
