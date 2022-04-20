@@ -189,6 +189,7 @@ end
 --     (norm_sq_pos.2 this)
 --   ... = norm y : by simp
 
+
 -- lemma nat_abs_norm_mod_lt (x : ℤ[i]) {y : ℤ[i]} (hy : y ≠ 0) :
 --   (x % y).norm.nat_abs < y.norm.nat_abs :=
 -- int.coe_nat_lt.1 (by simp [-int.coe_nat_lt, norm_mod_lt x hy])
