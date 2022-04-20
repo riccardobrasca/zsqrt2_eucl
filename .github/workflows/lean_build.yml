@@ -28,7 +28,8 @@ jobs:
     - name: update branch
       if: github.ref == 'refs/heads/master'
       uses: leanprover-contrib/update-versions-action@master
-      run: |
+      with:
+        run: |
           git config --global --add safe.directory $GITHUB_WORKSPACE
           git config --global --add safe.directory `pwd`
           git config --global --add safe.directory /github/workspace
