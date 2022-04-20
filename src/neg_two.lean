@@ -42,29 +42,27 @@ begin
 end
 
 
-lemma to_complex_def' (x y : ℤ) : ((⟨x, y⟩ : ℤ[√-2]) : ℂ) = x + y * I * sqrt(2) :=by simp [to_complex_def]
+lemma to_complex_def' (x y : ℤ) : ((⟨x, y⟩ : ℤ[√-2]) : ℂ) = x + y * I * sqrt(2) := by simp [to_complex_def]
 
-lemma to_complex_def₂ (x : ℤ[√-2]) : (x : ℂ) = ⟨x.re, x.im * sqrt 2⟩ :=by apply complex.ext; simp [to_complex_def]
+lemma to_complex_def₂ (x : ℤ[√-2]) : (x : ℂ) = ⟨x.re, x.im * sqrt 2⟩ :=
+by apply complex.ext; simp [to_complex_def]
 
-@[simp] lemma to_real_re (x : ℤ[√-2]) : ((x.re : ℤ) : ℝ) = (x : ℂ).re :=by simp [to_complex_def]
+@[simp] lemma to_real_re (x : ℤ[√-2]) : ((x.re : ℤ) : ℝ) = (x : ℂ).re :=
+by simp [to_complex_def]
 
-@[simp] lemma to_real_im (x : ℤ[√-2]) : ((x.im : ℤ) * sqrt 2 : ℝ) = (x : ℂ).im *sqrt 2 :=
-begin
-  norm_num,
-  --norm_cast,
-  sorry
-end
+@[simp] lemma to_real_im (x : ℤ[√-2]) : ((x.im : ℤ) * sqrt 2 : ℝ) = (x : ℂ).im :=
+by rw [to_complex_def₂]
 
-@[simp] lemma to_complex_re (x y : ℤ) : ((⟨x, y⟩ : ℤ[√-2]) : ℂ).re = x :=by simp [to_complex_def]
+@[simp] lemma to_complex_re (x y : ℤ) : ((⟨x, y⟩ : ℤ[√-2]) : ℂ).re = x := by simp [to_complex_def]
 
 @[simp] lemma to_complex_im (x y : ℤ) : ((⟨x, y⟩ : ℤ[√-2]) : ℂ).im = y * sqrt 2 :=by simp [to_complex_def]
 
-@[simp] lemma to_complex_add (x y : ℤ[√-2]) : ((x + y : ℤ[√-2]) : ℂ) = x + y := by refine to_complex.map_add _ _
-@[simp] lemma to_complex_mul (x y : ℤ[√-2]) : ((x * y : ℤ[√-2]) : ℂ) = x * y :=by refine to_complex.map_mul _ _
-@[simp] lemma to_complex_one : ((1 : ℤ[√-2]) : ℂ) = 1 :=by refine to_complex.map_one
-@[simp] lemma to_complex_zero : ((0 : ℤ[√-2]) : ℂ) = 0 :=by refine to_complex.map_zero
-@[simp] lemma to_complex_neg (x : ℤ[√-2]) : ((-x : ℤ[√-2]) : ℂ) = -x :=by refine to_complex.map_neg _
- @[simp] lemma to_complex_sub (x y : ℤ[√-2]) : ((x - y : ℤ[√-2]) : ℂ) = x - y := by refine to_complex.map_sub _ _
+@[simp] lemma to_complex_add (x y : ℤ[√-2]) : ((x + y : ℤ[√-2]) : ℂ) = x + y := by exact to_complex.map_add _ _
+@[simp] lemma to_complex_mul (x y : ℤ[√-2]) : ((x * y : ℤ[√-2]) : ℂ) = x * y := by exact to_complex.map_mul _ _
+@[simp] lemma to_complex_one : ((1 : ℤ[√-2]) : ℂ) = 1 := by exact to_complex.map_one
+@[simp] lemma to_complex_zero : ((0 : ℤ[√-2]) : ℂ) = 0 := by exact to_complex.map_zero
+@[simp] lemma to_complex_neg (x : ℤ[√-2]) : ((-x : ℤ[√-2]) : ℂ) = -x := by exact to_complex.map_neg _
+@[simp] lemma to_complex_sub (x y : ℤ[√-2]) : ((x - y : ℤ[√-2]) : ℂ) = x - y := by exact to_complex.map_sub _ _
 
 @[simp] lemma to_complex_inj {x y : ℤ[√-2]} : (x : ℂ) = y ↔ x = y :=
  by cases x; cases y; simp [to_complex_def₂]
@@ -74,9 +72,11 @@ end
 
 @[simp] lemma nat_cast_real_norm (x : ℤ[√-2]) : (x.norm : ℝ)= (x : ℂ).norm_sq :=
 begin
-  rw [norm, norm_sq];
+  rw [norm, norm_sq],
   simp,
-  sorry
+  rw [← to_real_im],
+  ring_nf,
+  finish,
 end
 
 
@@ -106,13 +106,27 @@ lemma norm_pos {x : ℤ[√-2]} : 0 < norm x ↔ x ≠ 0 := by rw [lt_iff_le_and
    (x : ℤ[√-2]) : (x.norm.nat_abs : α) = x.norm :=
  by rw [← int.cast_coe_nat, coe_nat_abs_norm]
 
+lemma _root_.nat_abs_cast_of_zero_le {a : ℤ} (h : 0 ≤ a) : ↑a.nat_abs = a :=
+begin
+  obtain ⟨b, hb⟩ := int.eq_coe_of_zero_le h,
+  rw [hb],
+  simp
+end
+
  lemma nat_abs_norm_eq (x : ℤ[√-2]) : x.norm.nat_abs =
-   x.re.nat_abs * x.re.nat_abs + x.im.nat_abs * x.im.nat_abs :=
-  int.coe_nat_inj $ 
+   x.re.nat_abs * x.re.nat_abs + 2 * x.im.nat_abs * x.im.nat_abs :=
   begin
-    simp,
     simp [norm],
-    sorry
+    apply int.coe_nat_inj,
+    nth_rewrite 1 [mul_assoc],
+    nth_rewrite 0 [mul_assoc],
+    simp,
+    refine nat_abs_cast_of_zero_le _,
+    refine add_nonneg _ _,
+    { exact mul_self_nonneg _ },
+    { refine mul_nonneg _ _,
+      { norm_num },
+      { exact mul_self_nonneg _ } }
   end
 
 
