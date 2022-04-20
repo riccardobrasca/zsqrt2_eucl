@@ -21,8 +21,7 @@ jobs:
     steps:
 
     - name: adding github workspace as safe directory
-        run:
-          git config --global --add safe.directory /github/workspace
+      run: git config --global --add safe.directory /github/workspace
 
     - name: checkout project
       uses: actions/checkout@v3
