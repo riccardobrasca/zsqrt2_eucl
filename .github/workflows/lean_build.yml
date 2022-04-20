@@ -23,11 +23,6 @@ jobs:
     - name: adding github workspace as safe directory
         run: git config --global --add safe.directory /github/workspace
 
-    - name: checkout on branch
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.head_ref }}
-
     - name: checkout project
       uses: actions/checkout@v3
       with:
