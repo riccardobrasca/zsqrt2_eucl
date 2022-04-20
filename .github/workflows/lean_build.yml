@@ -20,6 +20,9 @@ jobs:
     name: Update lean-x.y.z branch and build project
     steps:
 
+    - name: adding github workspace as safe directory
+        run: git config --global --add safe.directory /github/workspace
+
     - name: checkout project
       uses: actions/checkout@v3
       with:
