@@ -20,14 +20,18 @@ jobs:
     name: Update lean-x.y.z branch and build project
     steps:
 
+    - name: Fix issue with repository ownership
+      run: |
+        git config --global --add safe.directory $GITHUB_WORKSPACE
+        git config --global --add safe.directory `pwd`
+        git config --global --add safe.directory /github/workspace
+
     - name: checkout project
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
 
     - name: update branch
-      run: |
-        git config --global --add safe.directory /github/workspace
       if: github.ref == 'refs/heads/master'
       uses: leanprover-contrib/update-versions-action@master
 
