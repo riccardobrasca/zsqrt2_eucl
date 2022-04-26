@@ -123,20 +123,28 @@ lemma norm_pos {x : ℤ[√-2]} : 0 < norm x ↔ x ≠ 0 := by rw [lt_iff_le_and
   end
 
 
--- protected def div (x y : ℤ[√-2]) : ℤ[√-2] :=
--- let n := (rat.of_int (norm y))⁻¹ in let c := y.conj in
--- ⟨round (rat.of_int (x * c).re * n : ℚ),
---  round (rat.of_int (x * c).im * n : ℚ)⟩
+protected def div (x y : ℤ[√-2]) : ℤ[√-2] :=
+let n := (rat.of_int (norm y))⁻¹ in let c := y.conj in
+⟨round (rat.of_int (x * c).re * n : ℚ),
+round (rat.of_int (x * c).im * n : ℚ)⟩
 
--- instance : has_div ℤ[i] := ⟨gaussian_int.div⟩
+instance : has_div ℤ[√-2] := ⟨gaussian_int2.div⟩
 
--- lemma div_def (x y : ℤ[i]) : x / y = ⟨round ((x * conj y).re / norm y : ℚ),
---   round ((x * conj y).im / norm y : ℚ)⟩ :=
--- show zsqrtd.mk _ _ = _, by simp [rat.of_int_eq_mk, rat.mk_eq_div, div_eq_mul_inv]
+lemma div_def (x y : ℤ[√-2]) : x / y = ⟨round ((x * conj y).re / norm y : ℚ),
+  round ((x * conj y).im / norm y : ℚ)⟩ :=
+show zsqrtd.mk _ _ = _, by simp [rat.of_int_eq_mk, rat.mk_eq_div, div_eq_mul_inv]
 
--- lemma to_complex_div_re (x y : ℤ[i]) : ((x / y : ℤ[i]) : ℂ).re = round ((x / y : ℂ).re) :=
--- by rw [div_def, ← @rat.round_cast ℝ _ _];
---   simp [-rat.round_cast, mul_assoc, div_eq_mul_inv, mul_add, add_mul]
+lemma to_complex_div_re (x y : ℤ[√-2]) : ((x / y : ℤ[√-2]) : ℂ).re = round ((x / y : ℂ).re) :=
+begin
+  rw [div_def, ← @rat.round_cast ℝ _ _];
+  simp [-rat.round_cast, mul_assoc, div_eq_mul_inv, mul_add, add_mul],
+  congr' 1,
+  congr' 1,
+  rw [← mul_assoc, ← mul_assoc, ← mul_assoc],
+  congr' 1,
+  rw [← to_real_im, ← to_real_im],
+  sorry
+end
 
 -- lemma to_complex_div_im (x y : ℤ[i]) : ((x / y : ℤ[i]) : ℂ).im = round ((x / y : ℂ).im) :=
 -- by rw [div_def, ← @rat.round_cast ℝ _ _, ← @rat.round_cast ℝ _ _];
