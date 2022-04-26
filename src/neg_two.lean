@@ -7,11 +7,11 @@ open zsqrtd complex real
 
 noncomputable theory
 
-@[reducible] def gaussian_int : Type := zsqrtd (-2)
+@[reducible] def gaussian_int2 : Type := zsqrtd (-2)
 
-local notation `ℤ[√-2]` := gaussian_int
+local notation `ℤ[√-2]` := gaussian_int2
 
-namespace gaussian_int
+namespace gaussian_int2
 
 instance : has_repr ℤ[√-2] := ⟨λ x, "⟨" ++ repr x.re ++ ", " ++ repr x.im ++ "⟩"⟩
 
@@ -208,4 +208,4 @@ lemma norm_pos {x : ℤ[√-2]} : 0 < norm x ↔ x ≠ 0 := by rw [lt_iff_le_and
 --   .. gaussian_int.comm_ring,
 --   .. gaussian_int.nontrivial }
 
-end gaussian_int
+end gaussian_int2
