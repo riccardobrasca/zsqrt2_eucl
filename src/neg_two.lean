@@ -143,7 +143,8 @@ begin
   rw [← mul_assoc, ← mul_assoc, ← mul_assoc],
   congr' 1,
   rw [← to_real_im, ← to_real_im],
-  sorry
+  rw [← mul_assoc, mul_comm (↑(x.im) * sqrt 2 * ↑(y.im)) (sqrt 2), ← mul_assoc, ← mul_assoc, mul_comm (sqrt 2 * ↑(x.im)) (sqrt 2), ← mul_assoc],
+  simp,
 end
 
 -- lemma to_complex_div_im (x y : ℤ[i]) : ((x / y : ℤ[i]) : ℂ).im = round ((x / y : ℂ).im) :=
