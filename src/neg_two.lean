@@ -147,9 +147,12 @@ begin
   simp,
 end
 
--- lemma to_complex_div_im (x y : ℤ[i]) : ((x / y : ℤ[i]) : ℂ).im = round ((x / y : ℂ).im) :=
--- by rw [div_def, ← @rat.round_cast ℝ _ _, ← @rat.round_cast ℝ _ _];
---   simp [-rat.round_cast, mul_assoc, div_eq_mul_inv, mul_add, add_mul]
+lemma to_complex_div_im (x y : ℤ[√-2]) : ((x / y : ℤ[√-2]) : ℂ).im = round ((x / y : ℂ).im / sqrt 2) * sqrt 2 :=
+begin
+  rw [div_def, ← @rat.round_cast ℝ _ _, ← @rat.round_cast ℝ _ _];
+  simp [-rat.round_cast, mul_assoc, div_eq_mul_inv, mul_add, add_mul],
+  sorry
+end
 
 -- lemma norm_sq_le_norm_sq_of_re_le_of_im_le {x y : ℂ} (hre : |x.re| ≤ |y.re|)
 --   (him : |x.im| ≤ |y.im|) : x.norm_sq ≤ y.norm_sq :=
