@@ -163,11 +163,11 @@ end
 -- (add_le_add (mul_self_le_mul_self (abs_nonneg _) hre)
 --   (mul_self_le_mul_self (abs_nonneg _) him))
 
--- lemma norm_sq_div_sub_div_lt_one (x y : ℤ[i]) :
---   ((x / y : ℂ) - ((x / y : ℤ[i]) : ℂ)).norm_sq < 1 :=
--- calc ((x / y : ℂ) - ((x / y : ℤ[i]) : ℂ)).norm_sq =
---     ((x / y : ℂ).re - ((x / y : ℤ[i]) : ℂ).re +
---     ((x / y : ℂ).im - ((x / y : ℤ[i]) : ℂ).im) * I : ℂ).norm_sq :
+-- lemma norm_sq_div_sub_div_lt_one (x y : ℤ[√-2]) :
+--   ((x / y : ℂ) - ((x / y : ℤ[√-2]) : ℂ)).norm_sq < 1 :=
+-- calc ((x / y : ℂ) - ((x / y : ℤ[√-2]) : ℂ)).norm_sq =
+--     ((x / y : ℂ).re - ((x / y : ℤ[√-2]) : ℂ).re +
+--     ((x / y : ℂ).im - ((x / y : ℤ[√-2]) : ℂ).im) * I : ℂ).norm_sq :
 --       congr_arg _ $ by apply complex.ext; simp
 --   ... ≤ (1 / 2 + 1 / 2 * I).norm_sq :
 --   have |(2⁻¹ : ℝ)| = 2⁻¹, from _root_.abs_of_nonneg (by norm_num),
@@ -178,37 +178,37 @@ end
 --       simpa using abs_sub_round (x / y : ℂ).im)
 --   ... < 1 : by simp [norm_sq]; norm_num
 
--- protected def mod (x y : ℤ[i]) : ℤ[i] := x - y * (x / y)
+protected def mod (x y : ℤ[√-2]) : ℤ[√-2] := x - y * (x / y)
 
--- instance : has_mod ℤ[i] := ⟨gaussian_int.mod⟩
+instance : has_mod ℤ[√-2] := ⟨gaussian_int2.mod⟩
 
--- lemma mod_def (x y : ℤ[i]) : x % y = x - y * (x / y) := rfl
+lemma mod_def (x y : ℤ[√-2]) : x % y = x - y * (x / y) := rfl
 
--- lemma norm_mod_lt (x : ℤ[i]) {y : ℤ[i]} (hy : y ≠ 0) : (x % y).norm < y.norm :=
+-- lemma norm_mod_lt (x : ℤ[√-2]) {y : ℤ[√-2]} (hy : y ≠ 0) : (x % y).norm < y.norm :=
 -- have (y : ℂ) ≠ 0, by rwa [ne.def, ← to_complex_zero, to_complex_inj],
 -- (@int.cast_lt ℝ _ _ _ _).1 $
---   calc ↑(norm (x % y)) = (x - y * (x / y : ℤ[i]) : ℂ).norm_sq : by simp [mod_def]
---   ... = (y : ℂ).norm_sq * (((x / y) - (x / y : ℤ[i])) : ℂ).norm_sq :
+--   calc ↑(norm (x % y)) = (x - y * (x / y : ℤ[√-2]) : ℂ).norm_sq : by simp [mod_def]
+--   ... = (y : ℂ).norm_sq * (((x / y) - (x / y : ℤ[√-2])) : ℂ).norm_sq :
 --     by rw [← norm_sq_mul, mul_sub, mul_div_cancel' _ this]
 --   ... < (y : ℂ).norm_sq * 1 : mul_lt_mul_of_pos_left (norm_sq_div_sub_div_lt_one _ _)
 --     (norm_sq_pos.2 this)
 --   ... = norm y : by simp
 
 
--- lemma nat_abs_norm_mod_lt (x : ℤ[i]) {y : ℤ[i]} (hy : y ≠ 0) :
+-- lemma nat_abs_norm_mod_lt (x : ℤ[√-2]) {y : ℤ[√-2]} (hy : y ≠ 0) :
 --   (x % y).norm.nat_abs < y.norm.nat_abs :=
 -- int.coe_nat_lt.1 (by simp [-int.coe_nat_lt, norm_mod_lt x hy])
 
--- lemma norm_le_norm_mul_left (x : ℤ[i]) {y : ℤ[i]} (hy : y ≠ 0) :
+-- lemma norm_le_norm_mul_left (x : ℤ[√-2]) {y : ℤ[√-2]} (hy : y ≠ 0) :
 --   (norm x).nat_abs ≤ (norm (x * y)).nat_abs :=
 -- by rw [norm_mul, int.nat_abs_mul];
 --   exact le_mul_of_one_le_right (nat.zero_le _)
 --     (int.coe_nat_le.1 (by rw [coe_nat_abs_norm]; exact int.add_one_le_of_lt (norm_pos.2 hy)))
 
--- instance : nontrivial ℤ[i] :=
+-- instance : nontrivial ℤ[√-2] :=
 -- ⟨⟨0, 1, dec_trivial⟩⟩
 
--- instance : euclidean_domain ℤ[i] :=
+-- instance : euclidean_domain ℤ[√-2] :=
 -- { quotient := (/),
 --   remainder := (%),
 --   quotient_zero := by { simp [div_def], refl },
@@ -217,7 +217,7 @@ end
 --   r_well_founded := measure_wf (int.nat_abs ∘ norm),
 --   remainder_lt := nat_abs_norm_mod_lt,
 --   mul_left_not_lt := λ a b hb0, not_lt_of_ge $ norm_le_norm_mul_left a hb0,
---   .. gaussian_int.comm_ring,
---   .. gaussian_int.nontrivial }
+--   .. gaussian_int2.comm_ring,
+--   .. gaussian_int2.nontrivial }
 
 end gaussian_int2
