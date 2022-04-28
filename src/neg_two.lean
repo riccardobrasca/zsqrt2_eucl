@@ -172,7 +172,7 @@ calc ((x / y : ℂ) - ((x / y : ℤ[√-2]) : ℂ)).norm_sq =
       congr_arg _ $ by apply complex.ext;
       simp
 ... = ((x / y : ℂ).re - ((x / y : ℤ[√-2]) : ℂ).re)^2 + ((x / y : ℂ).im - ((x / y : ℤ[√-2]) : ℂ).im)^2 :
-      sorry
+      by norm_cast; rw norm_sq_add_mul_I
 ... <= 1/4 + 1/2 :
       sorry
 ... < 1 :
