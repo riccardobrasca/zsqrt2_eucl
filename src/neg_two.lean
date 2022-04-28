@@ -163,20 +163,20 @@ end
 -- (add_le_add (mul_self_le_mul_self (abs_nonneg _) hre)
 --   (mul_self_le_mul_self (abs_nonneg _) him))
 
--- lemma norm_sq_div_sub_div_lt_one (x y : ℤ[√-2]) :
---   ((x / y : ℂ) - ((x / y : ℤ[√-2]) : ℂ)).norm_sq < 1 :=
--- calc ((x / y : ℂ) - ((x / y : ℤ[√-2]) : ℂ)).norm_sq =
---     ((x / y : ℂ).re - ((x / y : ℤ[√-2]) : ℂ).re +
---     ((x / y : ℂ).im - ((x / y : ℤ[√-2]) : ℂ).im) * I : ℂ).norm_sq :
---       congr_arg _ $ by apply complex.ext; simp
---   ... ≤ (1 / 2 + 1 / 2 * I).norm_sq :
---   have |(2⁻¹ : ℝ)| = 2⁻¹, from _root_.abs_of_nonneg (by norm_num),
---   norm_sq_le_norm_sq_of_re_le_of_im_le
---     (by rw [to_complex_div_re]; simp [norm_sq, this];
---       simpa using abs_sub_round (x / y : ℂ).re)
---     (by rw [to_complex_div_im]; simp [norm_sq, this];
---       simpa using abs_sub_round (x / y : ℂ).im)
---   ... < 1 : by simp [norm_sq]; norm_num
+lemma norm_sq_div_sub_div_lt_one (x y : ℤ[√-2]) :
+  ((x / y : ℂ) - ((x / y : ℤ[√-2]) : ℂ)).norm_sq < 1 :=
+
+calc ((x / y : ℂ) - ((x / y : ℤ[√-2]) : ℂ)).norm_sq =
+    ((x / y : ℂ).re - ((x / y : ℤ[√-2]) : ℂ).re +
+    ((x / y : ℂ).im - ((x / y : ℤ[√-2]) : ℂ).im) * I : ℂ).norm_sq :
+      congr_arg _ $ by apply complex.ext; simp
+... = ((x / y : ℂ).re - ((x / y : ℤ[√-2]) : ℂ).re)^2 + ((x / y : ℂ).im - ((x / y : ℤ[√-2]) : ℂ).im)^2 :
+      sorry
+... <= 1/4 + 1/2 :
+      sorry
+... < 1 :
+      sorry  
+
 
 protected def mod (x y : ℤ[√-2]) : ℤ[√-2] := x - y * (x / y)
 
