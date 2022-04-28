@@ -169,13 +169,14 @@ lemma norm_sq_div_sub_div_lt_one (x y : ℤ[√-2]) :
 calc ((x / y : ℂ) - ((x / y : ℤ[√-2]) : ℂ)).norm_sq =
     ((x / y : ℂ).re - ((x / y : ℤ[√-2]) : ℂ).re +
     ((x / y : ℂ).im - ((x / y : ℤ[√-2]) : ℂ).im) * I : ℂ).norm_sq :
-      congr_arg _ $ by apply complex.ext; simp
+      congr_arg _ $ by apply complex.ext;
+      simp
 ... = ((x / y : ℂ).re - ((x / y : ℤ[√-2]) : ℂ).re)^2 + ((x / y : ℂ).im - ((x / y : ℤ[√-2]) : ℂ).im)^2 :
       sorry
 ... <= 1/4 + 1/2 :
       sorry
 ... < 1 :
-      sorry  
+      by norm_num
 
 
 protected def mod (x y : ℤ[√-2]) : ℤ[√-2] := x - y * (x / y)
