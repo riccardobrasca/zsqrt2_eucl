@@ -179,7 +179,7 @@ calc ((x / y : ℂ) - ((x / y : ℤ[√-2]) : ℂ)).norm_sq =
       by norm_num,
 
   have h1 : (1/4 : ℝ) = (1/2)^2, by norm_num,
-  -- have h2 : (1/2 : ℝ) = 2*(1/4), by norm_num,
+  have h2 : (1/2 : ℝ) = (sqrt(2)/2)^2, by norm_num,
   refine add_le_add _ _,
   {
     rw to_complex_div_re,
@@ -190,6 +190,9 @@ calc ((x / y : ℂ) - ((x / y : ℤ[√-2]) : ℂ)).norm_sq =
     apply abs_sub_round,
   },
   {
+    rw to_complex_div_im,
+    rw h2,
+    apply sq_le_sq,
     sorry
   }
 end
