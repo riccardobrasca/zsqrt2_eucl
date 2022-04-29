@@ -180,6 +180,10 @@ calc ((x / y : ℂ) - ((x / y : ℤ[√-2]) : ℂ)).norm_sq =
 
   have h1 : (1/4 : ℝ) = (1/2)^2, by norm_num,
   have h2 : (1/2 : ℝ) = (sqrt(2)/2)^2, by norm_num,
+  have h3 : 0 < |sqrt(2 : ℝ)|, by norm_num,
+  have h4 : |(1/2 : ℝ)| = 1/2,
+  { refine abs_of_pos _,
+    norm_num },
   refine add_le_add _ _,
   {
     rw to_complex_div_re,
@@ -196,7 +200,12 @@ calc ((x / y : ℂ) - ((x / y : ℤ[√-2]) : ℂ)).norm_sq =
     have sqrt2pos : 0 < sqrt 2, by norm_num,
     have : |(x / y : ℂ).im / sqrt 2 - round((x / y : ℂ).im / sqrt 2) | ≤ 1/2, 
     apply abs_sub_round,
-    sorry
+    rw [← mul_le_mul_right h3, ← _root_.abs_mul, sub_mul] at this,
+    convert this,
+    { simp },
+    { rw [← h4, ← _root_.abs_mul],
+      congr' 1,
+      rw [one_div, div_eq_mul_inv, mul_comm] }
   }
 end
 
