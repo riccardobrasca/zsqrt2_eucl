@@ -193,6 +193,9 @@ calc ((x / y : ℂ) - ((x / y : ℤ[√-2]) : ℂ)).norm_sq =
     rw to_complex_div_im,
     rw h2,
     apply sq_le_sq,
+    have : 0 < sqrt 2, by norm_num,
+
+    --rw mul_le_mul_right this,
     sorry
   }
 end
