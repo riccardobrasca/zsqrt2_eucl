@@ -151,16 +151,20 @@ lemma to_complex_div_im (x y : ℤ[√-2]) : ((x / y : ℤ[√-2]) : ℂ).im = r
 begin
   rw [div_def, ← @rat.round_cast ℝ _ _, ← @rat.round_cast ℝ _ _];
   simp [-rat.round_cast, mul_assoc, div_eq_mul_inv, mul_add, add_mul],
-  have h1 : ((x : ℤ[√-2]) : ℂ).im = ((x : ℤ[√-2]).im : ℝ) * sqrt(2), sorry,
-  have h2 : ((y : ℤ[√-2]) : ℂ).im = ((y : ℤ[√-2]).im : ℝ) * sqrt(2), sorry,
+  have h1 : ((x : ℤ[√-2]) : ℂ).im = ((x : ℤ[√-2]).im : ℝ) * sqrt(2), rw to_complex_def₂,
+  have h2 : ((y : ℤ[√-2]) : ℂ).im = ((y : ℤ[√-2]).im : ℝ) * sqrt(2), rw to_complex_def₂,
   rw [h1, h2], 
   rw mul_comm (((y : ℂ)).norm_sq)⁻¹ (sqrt 2)⁻¹,
   nth_rewrite_rhs 0 mul_assoc,
-  rw ← mul_assoc (sqrt 2) (sqrt 2)⁻¹ (((y : ℂ)).norm_sq)⁻¹,
-  rw mul_comm (sqrt 2) (sqrt 2)⁻¹,
-  -- rw inv_mul_cancel_of_invertible,
+  nth_rewrite_rhs 4 ← mul_assoc,
+  nth_rewrite_rhs 3 ← mul_assoc,
+  rw mul_comm (y : ℂ).re (sqrt 2)⁻¹,
+  nth_rewrite_rhs 2 ← mul_assoc,
+  nth_rewrite_rhs 2 ← mul_assoc,
+  rw mul_assoc (x.im : ℝ) (sqrt 2) (sqrt 2)⁻¹,
 
-  sorry
+  norm_num,
+  rw mul_assoc,
 end
 
 lemma norm_sq_div_sub_div_lt_one (x y : ℤ[√-2]) :
