@@ -150,7 +150,7 @@ end
 lemma to_complex_div_im (x y : ℤ[√-2]) : ((x / y : ℤ[√-2]) : ℂ).im = round ((x / y : ℂ).im / sqrt 2) * sqrt 2 :=
 begin
   rw [div_def, ← @rat.round_cast ℝ _ _, ← @rat.round_cast ℝ _ _];
-  simp [-rat.round_cast, mul_assoc, div_eq_mul_inv, mul_add, add_mul],
+  simp [mul_assoc, div_eq_mul_inv, mul_add, add_mul],
   have h1 : ((x : ℤ[√-2]) : ℂ).im = ((x : ℤ[√-2]).im : ℝ) * sqrt(2), rw to_complex_def₂,
   have h2 : ((y : ℤ[√-2]) : ℂ).im = ((y : ℤ[√-2]).im : ℝ) * sqrt(2), rw to_complex_def₂,
   rw [h1, h2], 
