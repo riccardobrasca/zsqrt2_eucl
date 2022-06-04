@@ -189,17 +189,9 @@ calc ((x / y : ℂ) - ((x / y : ℤ[√-2]) : ℂ)).norm_sq =
   { refine abs_of_pos _,
     norm_num },
   refine add_le_add _ _,
-  {
-    rw to_complex_div_re,
-    rw h1,
-    apply sq_le_sq,
-    rw h4,
-    apply abs_sub_round,
-  },
-  {
-    rw to_complex_div_im,
-    rw h2,
-    apply sq_le_sq,
+  { rw [to_complex_div_re, h1, sq_le_sq, h4],
+    apply abs_sub_round },
+  { rw [to_complex_div_im, h2, sq_le_sq],
     have sqrt2pos : 0 < sqrt 2, by norm_num,
     have : |(x / y : ℂ).im / sqrt 2 - round((x / y : ℂ).im / sqrt 2) | ≤ 1/2, 
     apply abs_sub_round,
@@ -208,8 +200,7 @@ calc ((x / y : ℂ) - ((x / y : ℤ[√-2]) : ℂ)).norm_sq =
     { simp },
     { rw [← h4, ← _root_.abs_mul],
       congr' 1,
-      rw [one_div, div_eq_mul_inv, mul_comm] }
-  }
+      rw [one_div, div_eq_mul_inv, mul_comm] } }
 end
 
 protected def mod (x y : ℤ[√-2]) : ℤ[√-2] := x - y * (x / y)
